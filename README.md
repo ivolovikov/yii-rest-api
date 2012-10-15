@@ -99,7 +99,7 @@ Yii Framework >= 1.1.8
 
 ### LICENSE
 
-Copyright 2012 Pays I/O Ltd.
+Copyright (c) 2012 Pays I/O Ltd. (http://pays.io)
 
 Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 
