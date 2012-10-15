@@ -1,0 +1,24 @@
+{
+    "name": "paysio/yii-rest-api",
+    "description": "Yii Rest API Service",
+    "type": "yii-extension",
+    "keywords": [
+        "Yii RESTful API",
+        "REST API"
+    ],
+    "homepage": "https://github.com/paysio/yii-rest-api",
+    "license": "MIT",
+    "require": {
+        "php": ">=5.3.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "*",
+        "ext-curl": "*"
+    },
+    "autoload": {
+        "psr-0": {
+            "rest\\": "library/",
+            "restTest\\": "tests/"
+        }
+    }
+}

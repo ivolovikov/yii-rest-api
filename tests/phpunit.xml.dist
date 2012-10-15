@@ -1,0 +1,14 @@
+<phpunit bootstrap="./Bootstrap.php"
+         stopOnError="true"
+         stopOnFailure="false"
+         colors="true">
+    <testsuites>
+        <testsuite name="Yii REST API test">
+            <directory>./restTest</directory>
+        </testsuite>
+    </testsuites>
+    <php>
+        <!-- Integration Test Variables -->
+        <!--<var name="DB_ADAPTER_DRIVER_SQLSRV_HOSTNAME" value="" />-->
+    </php>
+</phpunit>
