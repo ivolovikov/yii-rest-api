@@ -4,14 +4,14 @@ This is extension for Yii Framework (http://www.yiiframework.com/), which can ea
 
 ### INSTALLATION
 
-All of this code yo can see in *demo* folder.
+All of this code yo can find in *demo* folder.
 
 - Unpack *library* folder to *YOUR_EXTENSION_PATH/yii-rest-api*
 - Update yours *config/main.php*
 
 Add new path of alias at the beginning
 
-    YiiBase::setPathOfAlias('rest', realpath(__DIR__ . 'YOUR_EXTENSION_PATH/yii-rest-api/library/rest'));
+    YiiBase::setPathOfAlias('rest', 'YOUR_EXTENSION_PATH/yii-rest-api/library/rest');
 
 Add extension service to preload and components sections
 
