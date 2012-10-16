@@ -4,24 +4,16 @@ This is extension for Yii Framework (http://www.yiiframework.com/), which can ea
 
 ### EXAMPLE
 #### Request
-    curl https://api.paysio.com/v1/charges \
-      -u HZClZur5OW3BYimWSydQNsArbph2L7IRo0ql8HK: \
-      -d amount=1000 \
-      -d currency_id="rur" \
-      -d payment_system_id="test" \
-      -d description="Test charge"
+     curl http://test.local/api/users 
+       -u demo:demo 
+       -d email="user@test.local" 
+       -d password="passwd"
 #### Response
     {
-        "object":"charge",
-        "id":"ch_FPAS8Sj3EXQVMKweWkR",
-        "merchant_id":"mt_4rtcz5Im11tDohwZba",
-        "payment_system_id":"test",
-        "currency_id":"rur",
-        "amount":"1000",
-        "fee":0,
-        ...
-        "created":1350386949,
-        "updated":1350386949
+        "object":"rest_user",
+        "id":"TEST_ID",
+        "email":"user@test.local",
+        "name":"Test REST User"
     }
 
 ### INSTALLATION
@@ -42,7 +34,7 @@ Add extension service to preload and components sections
     'components' => array(  
         'restService' => array(  
             'class'  => '\rest\Service',  
-            'enable' => isset($_REQUEST['_rest']), // for example  
+            'enable' => isset($_SERVER['REQUEST_URI']) && (strpos($_SERVER['REQUEST_URI'], '/api/') !== false), //for example
         ),  
     ),
 
@@ -53,9 +45,9 @@ Change routing settings
         'showScriptName' => false,
         'baseUrl'        => '',
         'rules' => array(
-            array('%YOUR_CONTROLLER%/index',  'pattern' => 'api/%YOUR_CONTROLLER%', 'verb' => 'GET'),
+            array('%YOUR_CONTROLLER%/index',  'pattern' => 'api/%YOUR_CONTROLLER%', 'verb' => 'GET', 'parsingOnly' => true),
             array('%YOUR_CONTROLLER%/create', 'pattern' => 'api/%YOUR_CONTROLLER%', 'verb' => 'POST', 'parsingOnly' => true),
-            array('%YOUR_CONTROLLER%/view',   'pattern' => 'api/%YOUR_CONTROLLER%/<id>', 'verb' => 'GET'),
+            array('%YOUR_CONTROLLER%/view',   'pattern' => 'api/%YOUR_CONTROLLER%/<id>', 'verb' => 'GET', 'parsingOnly' => true),
             array('%YOUR_CONTROLLER%/update', 'pattern' => 'api/%YOUR_CONTROLLER%/<id>', 'verb' => 'PUT', 'parsingOnly' => true),
             array('%YOUR_CONTROLLER%/delete', 'pattern' => 'api/%YOUR_CONTROLLER%/<id>', 'verb' => 'DELETE', 'parsingOnly' => true),
         )
@@ -74,7 +66,7 @@ Add behavior
 
 Overwrite render method (if need it)
 
-    public function render($view, $data = null, $return = false, array $fields = null)
+    public function render($view, $data = null, $return = false, array $fields = array())
     {
         if (($behavior = $this->asa('restAPI')) && $behavior->getEnabled()) {
             return $this->renderRest($view, $data, $return, $fields);
