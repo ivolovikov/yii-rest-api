@@ -5,22 +5,22 @@
  * @link      https://github.com/paysio/yii-rest-api
  * @copyright Copyright (c) 2012 Pays I/O Ltd. (http://pays.io)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT license
- * @package   REST_Service_DEMO
+ * @package   REST_Service_Demo
  */
 
 /**
  * @method array getRenderAttributes(bool $recursive = true)
  * @method string getObjectId()
  */
-class RestMockModel extends CModel
+class RestUser extends CModel
 {
     public $id = 'TEST_ID';
 
-    public $version = 0.1;
+    public $email = 'user@test.local';
 
-    public $name = 'Yii REST API';
+    public $name = 'Test REST User';
 
-    public $hidden;
+    public $password = 'hidden_password';
 
     public function __construct()
 	{
@@ -32,7 +32,7 @@ class RestMockModel extends CModel
      */
     public function attributeNames()
     {
-        return array('id', 'version', 'name', 'hidden');
+        return array('id', 'email', 'name', 'password');
     }
 
     /**
@@ -41,10 +41,10 @@ class RestMockModel extends CModel
     public function rules()
     {
         return array(
-            array('version', 'numerical'),
-            array('name', 'length', 'max' => 244),
+            array('email', 'email'),
+            array('name, password', 'length', 'max' => 244),
 
-            array('id,version,name', 'safe', 'on' => 'render'),
+            array('id, email, name', 'safe', 'on' => 'render'),
         );
     }
 

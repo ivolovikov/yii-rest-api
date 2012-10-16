@@ -82,6 +82,7 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
         $defaultOptions = array(
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_HEADER => 1,
+            CURLOPT_USERPWD => 'demo:demo',
         );
 
         if (isset($options[CURLOPT_POSTFIELDS])) {

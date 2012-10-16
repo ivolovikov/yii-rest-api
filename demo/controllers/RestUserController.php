@@ -5,7 +5,7 @@
  * @link      https://github.com/paysio/yii-rest-api
  * @copyright Copyright (c) 2012 Pays I/O Ltd. (http://pays.io)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT license
- * @package   REST_Service_DEMO
+ * @package   REST_Service_Demo
  */
 
 /**
@@ -17,13 +17,8 @@
  * @method bool isRestService()
  * @method \rest\Service getRestService()
  */
-class RestController extends Controller
+class RestUserController extends Controller
 {
-    public function init()
-	{
-	    Yii::app()->restService->enable();
-    }
-
     /**
      * @return array
      */
@@ -36,23 +31,23 @@ class RestController extends Controller
 
     public function actionIndex()
     {
-        $model = new RestMockModel();
+        $model = new RestUser();
         $data = array(
             'count' => 100,
             'data' => array($model, $model, $model)
         );
-        $this->render('empty', $data, false, array('count', 'data'));
+        $this->render('empty', $data);
     }
 
     public function actionView()
     {
         $model = $this->loadModel();
-        $this->render('empty', array('model' => $model), false, array('model'));
+        $this->render('empty', array('model' => $model));
     }
 
     public function actionCreate()
     {
-        $model =  new RestMockModel();
+        $model = new RestUser();
 
         if ($this->isPost() && ($data = $_POST)) {
             $model->attributes = $data;
@@ -60,14 +55,14 @@ class RestController extends Controller
                 $this->redirect(array('view', 'id' => $model), true, 201);
             }
         }
-        $this->render('empty', array('model' => $model), false, array('model'));
+        $this->render('empty', array('model' => $model));
     }
 
     public function actionUpdate()
     {
         $model = $this->loadModel();
         $data = array(
-            'version' => Yii::app()->request->getPut('version'),
+            'email' => Yii::app()->request->getPut('email'),
             'name' => Yii::app()->request->getPut('name'),
         );
 
@@ -77,7 +72,7 @@ class RestController extends Controller
                 $this->redirect(array('view', 'id' => $model));
             }
         }
-        $this->render('empty', array('model' => $model), false, array('model'));
+        $this->render('empty', array('model' => $model));
     }
 
     public function actionDelete()
@@ -91,13 +86,13 @@ class RestController extends Controller
     }
 
     /**
-     * @return RestMockModel
+     * @return RestUser
      * @throws CHttpException
      */
     public function loadModel()
     {
         $id = isset($_GET['id']) ? $_GET['id'] : null;
-        $object = new RestMockModel();
+        $object = new RestUser();
         if ($id != $object->id) {
             throw new CHttpException(404, Yii::t('app', 'Object not found'));
         }
@@ -118,9 +113,14 @@ class RestController extends Controller
 	 * @see renderPartial
 	 * @see getLayoutFile
 	 */
-	public function render($view, $data = null, $return = false, array $fields = array())
+	public function render($view, $data = null, $return = false, array $fields = array('count', 'model', 'data'))
 	{
         if (($behavior = $this->asa('restAPI')) && $behavior->getEnabled()) {
+            if (isset($data['model']) && $this->isRestService() && 
+                count(array_intersect(array_keys($data), $fields)) == 1) {
+                $data = $data['model'];
+                $fields = null;
+            }
             return $this->renderRest($view, $data, $return, $fields);
         } else {
             return parent::render($view, $data, $return);
