@@ -2,6 +2,28 @@
 
 This is extension for Yii Framework (http://www.yiiframework.com/), which can easy add RESTful API to existing web application.
 
+### EXAMPLE
+#### Request
+    curl https://api.paysio.com/v1/charges \
+      -u HZClZur5OW3BYimWSydQNsArbph2L7IRo0ql8HK: \
+      -d amount=1000 \
+      -d currency_id="rur" \
+      -d payment_system_id="test" \
+      -d description="Test charge"
+#### Response
+    {
+        "object":"charge",
+        "id":"ch_FPAS8Sj3EXQVMKweWkR",
+        "merchant_id":"mt_4rtcz5Im11tDohwZba",
+        "payment_system_id":"test",
+        "currency_id":"rur",
+        "amount":"1000",
+        "fee":0,
+        ...
+        "created":1350386949,
+        "updated":1350386949
+    }
+
 ### INSTALLATION
 
 All of this code yo can find in *demo* folder.
