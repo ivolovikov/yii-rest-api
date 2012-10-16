@@ -34,7 +34,7 @@ Add extension service to preload and components sections
     'components' => array(  
         'restService' => array(  
             'class'  => '\rest\Service',  
-            'enable' => isset($_SERVER['REQUEST_URI']) && (strpos($_SERVER['REQUEST_URI'], '/api/') !== false), //for example
+            'enable' => strpos($_SERVER['REQUEST_URI'], '/api/') !== false, // for example
         ),  
     ),
 
