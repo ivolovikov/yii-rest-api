@@ -51,7 +51,7 @@ class RestUserController extends Controller
 
         if ($this->isPost() && ($data = $_POST)) {
             $model->attributes = $data;
-            if ($model->validate()) {
+            if ($model->save()) {
                 $this->redirect(array('view', 'id' => $model), true, 201);
             }
         }
@@ -68,7 +68,7 @@ class RestUserController extends Controller
 
         if ($this->isPut() && $data) {
             $model->attributes = $data;
-            if ($model->validate()) {
+            if ($model->save()) {
                 $this->redirect(array('view', 'id' => $model));
             }
         }

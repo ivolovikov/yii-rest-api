@@ -61,4 +61,13 @@ class RestUser extends CModel
             'renderModel' => array('class' => '\rest\model\Behavior')
         );
     }
+
+    /**
+     * @return bool
+     */
+    public function save()
+    {
+        // does nothing
+        return $this->validate();
+    }
 }
