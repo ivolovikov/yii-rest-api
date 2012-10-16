@@ -6,12 +6,12 @@ This is extension for Yii Framework (http://www.yiiframework.com/), which can ea
 
 All of this code yo can find in *demo* folder.
 
-- Unpack *library* folder to *YOUR_EXTENSION_PATH/yii-rest-api*
+- Unpack *library* folder to *%YOUR_EXTENSION_PATH%/yii-rest-api*
 - Update yours *config/main.php*
 
 Add new path of alias at the beginning
 
-    YiiBase::setPathOfAlias('rest', 'YOUR_EXTENSION_PATH/yii-rest-api/library/rest');
+    YiiBase::setPathOfAlias('rest', '%YOUR_EXTENSION_PATH%/yii-rest-api/library/rest');
 
 Add extension service to preload and components sections
 
@@ -31,11 +31,11 @@ Change routing settings
         'showScriptName' => false,
         'baseUrl'        => '',
         'rules' => array(
-            array('rest/index',  'pattern' => 'api/rest', 'verb' => 'GET'),
-            array('rest/create', 'pattern' => 'api/rest', 'verb' => 'POST', 'parsingOnly' => true),
-            array('rest/view',   'pattern' => 'api/rest/<id>', 'verb' => 'GET'),
-            array('rest/update', 'pattern' => 'api/rest/<id>', 'verb' => 'PUT', 'parsingOnly' => true),
-            array('rest/delete', 'pattern' => 'api/rest/<id>', 'verb' => 'DELETE', 'parsingOnly' => true),
+            array('%YOUR_CONTROLLER%/index',  'pattern' => 'api/%YOUR_CONTROLLER%', 'verb' => 'GET'),
+            array('%YOUR_CONTROLLER%/create', 'pattern' => 'api/%YOUR_CONTROLLER%', 'verb' => 'POST', 'parsingOnly' => true),
+            array('%YOUR_CONTROLLER%/view',   'pattern' => 'api/%YOUR_CONTROLLER%/<id>', 'verb' => 'GET'),
+            array('%YOUR_CONTROLLER%/update', 'pattern' => 'api/%YOUR_CONTROLLER%/<id>', 'verb' => 'PUT', 'parsingOnly' => true),
+            array('%YOUR_CONTROLLER%/delete', 'pattern' => 'api/%YOUR_CONTROLLER%/<id>', 'verb' => 'DELETE', 'parsingOnly' => true),
         )
     ),
 
