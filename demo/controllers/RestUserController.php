@@ -47,7 +47,7 @@ class RestUserController extends Controller
 
     public function actionCreate()
     {
-        $model = new RestUser();
+        $model = new RestUser('create');
 
         if ($this->isPost() && ($data = $_POST)) {
             $model->attributes = $data;

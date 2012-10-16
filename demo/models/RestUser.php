@@ -20,11 +20,14 @@ class RestUser extends CModel
 
     public $name = 'Test REST User';
 
-    public $password = 'hidden_password';
+    public $password;
 
-    public function __construct()
+    public function __construct($scenario = null)
 	{
-		$this->attachBehaviors($this->behaviors());
+		if ($scenario !== null) {
+            $this->scenario = $scenario;
+        }
+        $this->attachBehaviors($this->behaviors());
 	}
 
     /**
@@ -41,6 +44,7 @@ class RestUser extends CModel
     public function rules()
     {
         return array(
+            array('email, password', 'required', 'on' => 'create'),
             array('email', 'email'),
             array('name, password', 'length', 'max' => 244),
 

@@ -14,11 +14,15 @@ class RestUserTest extends AbstractTest
 {
     public function testCreate()
     {
-        $result = $this->post('/api/users', array('email' => 'test@test.local'));
+        $result = $this->post('/api/users', array(
+            'email' => 'test@test.local',
+            'password' => 'hidden_password',
+        ));
         $model = json_decode($result['body']);
 
         $this->assertEquals($model->id, 'TEST_ID');
         $this->assertEquals($model->email, 'test@test.local');
+        $this->assertFalse(isset($model->password));
 
         $this->assertEquals($result['code'], 201);
 
