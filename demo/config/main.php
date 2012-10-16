@@ -32,11 +32,11 @@ return array(
 			'showScriptName' => false,
             'baseUrl'        => '',
             'rules' => array(
-                array('<controller>/index',  'pattern' => 'api/<controller:\w+>', 'verb' => 'GET'),
-                array('<controller>/create', 'pattern' => 'api/<controller:\w+>', 'verb' => 'POST'),
-                array('<controller>/view',   'pattern' => 'api/<controller:\w+>/<id>', 'verb' => 'GET'),
-                array('<controller>/update', 'pattern' => 'api/<controller:\w+>/<id>', 'verb' => 'PUT'),
-                array('<controller>/delete', 'pattern' => 'api/<controller:\w+>/<id>', 'verb' => 'DELETE'),
+                array('rest/index',  'pattern' => 'api/rest', 'verb' => 'GET'),
+                array('rest/create', 'pattern' => 'api/rest', 'verb' => 'POST', 'parsingOnly' => true),
+                array('rest/view',   'pattern' => 'api/rest/<id>', 'verb' => 'GET'),
+                array('rest/update', 'pattern' => 'api/rest/<id>', 'verb' => 'PUT', 'parsingOnly' => true),
+                array('rest/delete', 'pattern' => 'api/rest/<id>', 'verb' => 'DELETE', 'parsingOnly' => true),
             )
 		),
 	),
