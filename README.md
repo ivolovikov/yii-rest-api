@@ -92,6 +92,29 @@ Add rule
         );
     }
 
+### METHODS
+
+Methods that can be used after behaviors attached
+
+Controller methods
+
+    /**
+     * @method bool isPost()
+     * @method bool isPut()
+     * @method bool isDelete()
+     * @method string renderRest(string $view, array $data = null, bool $return = false, array $fields = array())
+     * @method void redirectRest(string $url, bool $terminate = true, int $statusCode = 302)
+     * @method bool isRestService()
+     * @method \rest\Service getRestService()
+     */
+
+Model methods
+
+    /**
+     * @method array getRenderAttributes(bool $recursive = true)
+     * @method string getObjectId()
+     */
+
 ### REQUIREMENTS
 
 PHP >= 5.3.0  

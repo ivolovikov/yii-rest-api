@@ -10,6 +10,7 @@
 
 /**
  * @method array getRenderAttributes(bool $recursive = true)
+ * @method string getObjectId()
  */
 class RestMockModel extends CModel
 {
