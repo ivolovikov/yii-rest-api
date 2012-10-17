@@ -102,21 +102,21 @@ class RestUserController extends Controller
 
 
     /**
-	 * Renders a view with a layout.
-	 *
-	 * @param string $view name of the view to be rendered. See {@link getViewFile} for details
-	 * about how the view script is resolved.
-	 * @param array $data data to be extracted into PHP variables and made available to the view script
-	 * @param boolean $return whether the rendering result should be returned instead of being displayed to end users.
-	 * @param array $fields allowed fields to REST render
-	 * @return string the rendering result. Null if the rendering result is not required.
-	 * @see renderPartial
-	 * @see getLayoutFile
-	 */
-	public function render($view, $data = null, $return = false, array $fields = array('count', 'model', 'data'))
-	{
+     * Renders a view with a layout.
+     *
+     * @param string $view name of the view to be rendered. See {@link getViewFile} for details
+     * about how the view script is resolved.
+     * @param array $data data to be extracted into PHP variables and made available to the view script
+     * @param boolean $return whether the rendering result should be returned instead of being displayed to end users.
+     * @param array $fields allowed fields to REST render
+     * @return string the rendering result. Null if the rendering result is not required.
+     * @see renderPartial
+     * @see getLayoutFile
+     */
+    public function render($view, $data = null, $return = false, array $fields = array('count', 'model', 'data'))
+    {
         if (($behavior = $this->asa('restAPI')) && $behavior->getEnabled()) {
-            if (isset($data['model']) && $this->isRestService() && 
+            if (isset($data['model']) && $this->isRestService() &&
                 count(array_intersect(array_keys($data), $fields)) == 1) {
                 $data = $data['model'];
                 $fields = null;
@@ -133,7 +133,7 @@ class RestUserController extends Controller
      * the first element must be a route to a controller action and the rest
      * are GET parameters in name-value pairs.
      * @param boolean|integer $terminate whether to terminate OR REST response status code !!!
-	 * @param integer $statusCode the HTTP status code. Defaults to 302. See {@link http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html}
+     * @param integer $statusCode the HTTP status code. Defaults to 302. See {@link http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html}
      * for details about HTTP status code.
      */
     public function redirect($url, $terminate = true, $statusCode = 302)
