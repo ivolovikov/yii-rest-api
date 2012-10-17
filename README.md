@@ -4,9 +4,9 @@ This is extension for Yii Framework (http://www.yiiframework.com/), which can ea
 
 ### EXAMPLE
 #### Request
-     curl http://test.local/api/users 
-       -u demo:demo 
-       -d email="user@test.local" 
+     curl http://test.local/api/users \
+       -u demo:demo \
+       -d email="user@test.local" \
        -d password="passwd"
 #### Response
     {
