@@ -24,9 +24,10 @@ class RestUser extends CModel
 
     public function __construct($scenario = null)
 	{
-		if ($scenario !== null) {
-            $this->scenario = $scenario;
+		if ($scenario === null) {
+            $scenario = Yii::app()->controller->getAction()->getId();
         }
+        $this->scenario = $scenario;
         $this->attachBehaviors($this->behaviors());
 	}
 
