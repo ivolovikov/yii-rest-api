@@ -216,7 +216,7 @@ class Service extends \CComponent
             ));
 
             $this->sendError(self::ERR_TYPE_PARAM, \Yii::t('ext', 'Invalid data parameters'), array(
-                'params' => $this->_generateModelErrorFields($data)
+                'params' => self::generateModelErrorFields($data)
             ), 400);
         }
 
@@ -240,7 +240,7 @@ class Service extends \CComponent
      * @param \CModel $model
      * @return array
      */
-    protected function _generateModelErrorFields(\CModel $model)
+    public static function generateModelErrorFields(\CModel $model)
     {
         $validators = \CValidator::$builtInValidators;
 
