@@ -5,7 +5,7 @@
  * @link      https://github.com/paysio/yii-rest-api
  * @copyright Copyright (c) 2012 Pays I/O Ltd. (http://pays.io)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT license
- * @package   REST_Service_DEMO
+ * @package   REST_Service_Demo
  */
 
 /**
@@ -17,13 +17,8 @@
  * @method bool isRestService()
  * @method \rest\Service getRestService()
  */
-class RestController extends Controller
+class RestUserController extends Controller
 {
-    public function init()
-	{
-	    Yii::app()->restService->enable();
-    }
-
     /**
      * @return array
      */
@@ -36,48 +31,48 @@ class RestController extends Controller
 
     public function actionIndex()
     {
-        $model = new RestMockModel();
+        $model = new RestUser();
         $data = array(
             'count' => 100,
             'data' => array($model, $model, $model)
         );
-        $this->render('empty', $data, false, array('count', 'data'));
+        $this->render('empty', $data);
     }
 
     public function actionView()
     {
         $model = $this->loadModel();
-        $this->render('empty', array('model' => $model), false, array('model'));
+        $this->render('empty', array('model' => $model));
     }
 
     public function actionCreate()
     {
-        $model =  new RestMockModel();
+        $model = new RestUser();
 
         if ($this->isPost() && ($data = $_POST)) {
             $model->attributes = $data;
-            if ($model->validate()) {
+            if ($model->save()) {
                 $this->redirect(array('view', 'id' => $model), true, 201);
             }
         }
-        $this->render('empty', array('model' => $model), false, array('model'));
+        $this->render('empty', array('model' => $model));
     }
 
     public function actionUpdate()
     {
         $model = $this->loadModel();
         $data = array(
-            'version' => Yii::app()->request->getPut('version'),
+            'email' => Yii::app()->request->getPut('email'),
             'name' => Yii::app()->request->getPut('name'),
         );
 
         if ($this->isPut() && $data) {
             $model->attributes = $data;
-            if ($model->validate()) {
+            if ($model->save()) {
                 $this->redirect(array('view', 'id' => $model));
             }
         }
-        $this->render('empty', array('model' => $model), false, array('model'));
+        $this->render('empty', array('model' => $model));
     }
 
     public function actionDelete()
@@ -91,13 +86,13 @@ class RestController extends Controller
     }
 
     /**
-     * @return RestMockModel
+     * @return RestUser
      * @throws CHttpException
      */
     public function loadModel()
     {
         $id = isset($_GET['id']) ? $_GET['id'] : null;
-        $object = new RestMockModel();
+        $object = new RestUser();
         if ($id != $object->id) {
             throw new CHttpException(404, Yii::t('app', 'Object not found'));
         }
@@ -107,20 +102,25 @@ class RestController extends Controller
 
 
     /**
-	 * Renders a view with a layout.
-	 *
-	 * @param string $view name of the view to be rendered. See {@link getViewFile} for details
-	 * about how the view script is resolved.
-	 * @param array $data data to be extracted into PHP variables and made available to the view script
-	 * @param boolean $return whether the rendering result should be returned instead of being displayed to end users.
-	 * @param array $fields allowed fields to REST render
-	 * @return string the rendering result. Null if the rendering result is not required.
-	 * @see renderPartial
-	 * @see getLayoutFile
-	 */
-	public function render($view, $data = null, $return = false, array $fields = array())
-	{
+     * Renders a view with a layout.
+     *
+     * @param string $view name of the view to be rendered. See {@link getViewFile} for details
+     * about how the view script is resolved.
+     * @param array $data data to be extracted into PHP variables and made available to the view script
+     * @param boolean $return whether the rendering result should be returned instead of being displayed to end users.
+     * @param array $fields allowed fields to REST render
+     * @return string the rendering result. Null if the rendering result is not required.
+     * @see renderPartial
+     * @see getLayoutFile
+     */
+    public function render($view, $data = null, $return = false, array $fields = array('count', 'model', 'data'))
+    {
         if (($behavior = $this->asa('restAPI')) && $behavior->getEnabled()) {
+            if (isset($data['model']) && $this->isRestService() &&
+                count(array_intersect(array_keys($data), $fields)) == 1) {
+                $data = $data['model'];
+                $fields = null;
+            }
             return $this->renderRest($view, $data, $return, $fields);
         } else {
             return parent::render($view, $data, $return);
@@ -133,7 +133,7 @@ class RestController extends Controller
      * the first element must be a route to a controller action and the rest
      * are GET parameters in name-value pairs.
      * @param boolean|integer $terminate whether to terminate OR REST response status code !!!
-	 * @param integer $statusCode the HTTP status code. Defaults to 302. See {@link http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html}
+     * @param integer $statusCode the HTTP status code. Defaults to 302. See {@link http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html}
      * for details about HTTP status code.
      */
     public function redirect($url, $terminate = true, $statusCode = 302)

@@ -133,9 +133,11 @@ class Service extends \CComponent
     protected function _setErrorHandlerError(array $error)
     {
         $refObject = new \ReflectionObject(\Yii::app()->errorHandler);
-        $refProperty = $refObject->getProperty('_error');
-        $refProperty->setAccessible(true);
-        $refProperty->setValue(\Yii::app()->errorHandler, $error);
+        if ($refObject->hasProperty('_error')) {
+            $refProperty = $refObject->getProperty('_error');
+            $refProperty->setAccessible(true);
+            $refProperty->setValue(\Yii::app()->errorHandler, $error);
+        }
     }
 
 	/**

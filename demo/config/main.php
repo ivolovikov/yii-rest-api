@@ -5,7 +5,7 @@
  * @link      https://github.com/paysio/yii-rest-api
  * @copyright Copyright (c) 2012 Pays I/O Ltd. (http://pays.io)
  * @license   http://www.opensource.org/licenses/mit-license.php MIT license
- * @package   REST_Service_DEMO
+ * @package   REST_Service_Demo
  */
 
 YiiBase::setPathOfAlias('rest', realpath(__DIR__ . '/../extensions/yii-rest-api/library/rest'));
@@ -24,19 +24,19 @@ return array(
 	'components' => array(
         'restService' => array(
             'class'  => '\rest\Service',
-            'enable' => isset($_REQUEST['_rest']),
+            'enable' => isset($_SERVER['REQUEST_URI']) && (strpos($_SERVER['REQUEST_URI'], '/api/') !== false), //for example
         ),
 
 		'urlManager' => array(
 			'urlFormat'      => 'path',
 			'showScriptName' => false,
             'baseUrl'        => '',
-            'rules' => array(
-                array('<controller>/index',  'pattern' => 'api/<controller:\w+>', 'verb' => 'GET'),
-                array('<controller>/create', 'pattern' => 'api/<controller:\w+>', 'verb' => 'POST'),
-                array('<controller>/view',   'pattern' => 'api/<controller:\w+>/<id>', 'verb' => 'GET'),
-                array('<controller>/update', 'pattern' => 'api/<controller:\w+>/<id>', 'verb' => 'PUT'),
-                array('<controller>/delete', 'pattern' => 'api/<controller:\w+>/<id>', 'verb' => 'DELETE'),
+            'rules'          => array(
+                array('restUser/index',  'pattern' => 'api/users', 'verb' => 'GET', 'parsingOnly' => true),
+                array('restUser/create', 'pattern' => 'api/users', 'verb' => 'POST', 'parsingOnly' => true),
+                array('restUser/view',   'pattern' => 'api/users/<id>', 'verb' => 'GET', 'parsingOnly' => true),
+                array('restUser/update', 'pattern' => 'api/users/<id>', 'verb' => 'PUT', 'parsingOnly' => true),
+                array('restUser/delete', 'pattern' => 'api/users/<id>', 'verb' => 'DELETE', 'parsingOnly' => true),
             )
 		),
 	),

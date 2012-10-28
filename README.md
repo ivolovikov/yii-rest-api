@@ -2,16 +2,30 @@
 
 This is extension for Yii Framework (http://www.yiiframework.com/), which can easy add RESTful API to existing web application.
 
+### EXAMPLE
+#### Request
+     curl http://test.local/api/users \
+       -u demo:demo \
+       -d email="user@test.local" \
+       -d password="passwd"
+#### Response
+    {
+        "object":"rest_user",
+        "id":"TEST_ID",
+        "email":"user@test.local",
+        "name":"Test REST User"
+    }
+
 ### INSTALLATION
 
 All of this code yo can find in *demo* folder.
 
-- Unpack *library* folder to *YOUR_EXTENSION_PATH/yii-rest-api*
+- Unpack *library* folder to *%YOUR_EXTENSION_PATH%/yii-rest-api*
 - Update yours *config/main.php*
 
 Add new path of alias at the beginning
 
-    YiiBase::setPathOfAlias('rest', 'YOUR_EXTENSION_PATH/yii-rest-api/library/rest');
+    YiiBase::setPathOfAlias('rest', '%YOUR_EXTENSION_PATH%/yii-rest-api/library/rest');
 
 Add extension service to preload and components sections
 
@@ -20,7 +34,7 @@ Add extension service to preload and components sections
     'components' => array(  
         'restService' => array(  
             'class'  => '\rest\Service',  
-            'enable' => isset($_REQUEST['_rest']), // for example  
+            'enable' => strpos($_SERVER['REQUEST_URI'], '/api/') !== false, // for example
         ),  
     ),
 
@@ -31,11 +45,11 @@ Change routing settings
         'showScriptName' => false,
         'baseUrl'        => '',
         'rules' => array(
-            array('<controller>/index',  'pattern' => 'api/<controller:\w+>', 'verb' => 'GET'),
-            array('<controller>/create', 'pattern' => 'api/<controller:\w+>', 'verb' => 'POST'),
-            array('<controller>/view',   'pattern' => 'api/<controller:\w+>/<id>', 'verb' => 'GET'),
-            array('<controller>/update', 'pattern' => 'api/<controller:\w+>/<id>', 'verb' => 'PUT'),
-            array('<controller>/delete', 'pattern' => 'api/<controller:\w+>/<id>', 'verb' => 'DELETE'),
+            array('%YOUR_CONTROLLER%/index',  'pattern' => 'api/%YOUR_CONTROLLER%', 'verb' => 'GET', 'parsingOnly' => true),
+            array('%YOUR_CONTROLLER%/create', 'pattern' => 'api/%YOUR_CONTROLLER%', 'verb' => 'POST', 'parsingOnly' => true),
+            array('%YOUR_CONTROLLER%/view',   'pattern' => 'api/%YOUR_CONTROLLER%/<id>', 'verb' => 'GET', 'parsingOnly' => true),
+            array('%YOUR_CONTROLLER%/update', 'pattern' => 'api/%YOUR_CONTROLLER%/<id>', 'verb' => 'PUT', 'parsingOnly' => true),
+            array('%YOUR_CONTROLLER%/delete', 'pattern' => 'api/%YOUR_CONTROLLER%/<id>', 'verb' => 'DELETE', 'parsingOnly' => true),
         )
     ),
 
@@ -52,7 +66,7 @@ Add behavior
 
 Overwrite render method (if need it)
 
-    public function render($view, $data = null, $return = false, array $fields = null)
+    public function render($view, $data = null, $return = false, array $fields = array())
     {
         if (($behavior = $this->asa('restAPI')) && $behavior->getEnabled()) {
             return $this->renderRest($view, $data, $return, $fields);
@@ -91,6 +105,29 @@ Add rule
             array('field1,field2,field3', 'safe', 'on' => 'render'),
         );
     }
+
+### METHODS
+
+Methods that can be used after behaviors attached
+
+Controller methods
+
+    /**
+     * @method bool isPost()
+     * @method bool isPut()
+     * @method bool isDelete()
+     * @method string renderRest(string $view, array $data = null, bool $return = false, array $fields = array())
+     * @method void redirectRest(string $url, bool $terminate = true, int $statusCode = 302)
+     * @method bool isRestService()
+     * @method \rest\Service getRestService()
+     */
+
+Model methods
+
+    /**
+     * @method array getRenderAttributes(bool $recursive = true)
+     * @method string getObjectId()
+     */
 
 ### REQUIREMENTS
 

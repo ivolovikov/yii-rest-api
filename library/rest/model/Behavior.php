@@ -45,7 +45,7 @@ class Behavior extends \CBehavior
     public function getRenderAttributes($recursive = true)
     {
         $model = $this->getOwner();
-        $attrs = array('object' => $this->getObjectId($model));
+        $attrs = array('object' => $this->getObjectId());
         foreach ($this->getAttributeNames() as $name) {
             $attr = $model->$name;
             if ($recursive) {
@@ -68,8 +68,12 @@ class Behavior extends \CBehavior
         return $attrs;
     }
 
-    public function getObjectId($model)
+    /**
+     * @return string
+     */
+    public function getObjectId()
     {
+        $model = $this->getOwner();
         return strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', get_class($model)));
     }
 
