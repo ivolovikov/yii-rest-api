@@ -204,7 +204,7 @@ class Service extends \CComponent
      * @param $data
      * @return mixed
      */
-    protected function _filterData($data)
+    protected function _filterData($data, $path = null)
     {
         if ($data instanceof \CModel && $data->hasErrors()) {
             $this->_setErrorHandlerError(array(
@@ -218,7 +218,7 @@ class Service extends \CComponent
             ));
 
             $this->sendError(self::ERR_TYPE_PARAM, \Yii::t('ext', 'Invalid data parameters'), array(
-                'params' => self::generateModelErrorFields($data)
+                'params' => self::generateModelErrorFields($data, $path)
             ), 400);
         }
 
@@ -228,7 +228,7 @@ class Service extends \CComponent
         if (is_array($data) || ($data instanceof \Traversable && !($data instanceof \CModel))) {
             $filteredData = array();
             foreach ($data as $key => $row) {
-                $filteredData[$key] = $this->_filterData($row);
+                $filteredData[$key] = $this->_filterData($row, $path ? $path . '[' . $key . ']' : $key);
             }
             $data = $filteredData;
         } elseif ($data instanceof \IDataProvider) {
@@ -242,7 +242,7 @@ class Service extends \CComponent
      * @param \CModel $model
      * @return array
      */
-    public static function generateModelErrorFields(\CModel $model)
+    public static function generateModelErrorFields(\CModel $model, $path = null)
     {
         $validators = \CValidator::$builtInValidators;
 
@@ -269,7 +269,7 @@ class Service extends \CComponent
                     if ($model->hasErrors($attribute)) {
                         $result[$i]['code'] = $code;
                         $result[$i]['message'] = $model->getError($attribute);
-                        $result[$i]['name'] = $attribute;
+                        $result[$i]['name'] = $path ? $path . '[' . $attribute . ']' : $attribute;
 
                         $errorHandled[] = $attribute;
                         $i++;
