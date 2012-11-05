@@ -218,7 +218,7 @@ class Service extends \CComponent
             ));
 
             $this->sendError(self::ERR_TYPE_PARAM, \Yii::t('ext', 'Invalid data parameters'), array(
-                'params' => self::generateModelErrorFields($data, $path)
+                'params' => $this->generateModelErrorFields($data, $path)
             ), 400);
         }
 
@@ -240,11 +240,16 @@ class Service extends \CComponent
 
     /**
      * @param \CModel $model
+     * @param null $path
      * @return array
      */
-    public static function generateModelErrorFields(\CModel $model, $path = null)
+    public function generateModelErrorFields(\CModel $model, $path = null)
     {
         $validators = \CValidator::$builtInValidators;
+
+        if ($this->hasEventHandler('onBeforeGenerateError')) {
+            $this->onBeforeGenerateError(new \CEvent($this, array('model' => $model)));
+        }
 
         $errors = $model->getErrors();
         $errorFields = array_keys($errors);
@@ -285,6 +290,14 @@ class Service extends \CComponent
         }
 
         return $result;
+    }
+
+    /**
+     * @param \CEvent $event
+     */
+    public function onBeforeGenerateError(\CEvent $event)
+    {
+        $this->raiseEvent('onBeforeGenerateError', $event);
     }
 
     /**
