@@ -62,7 +62,6 @@ class Service extends \CComponent
         if (!$this->isEnabled()) {
             return;
         }
-        $this->disable();
         $app = \Yii::app();
 
         $app->request->enableCsrfValidation = false;
@@ -82,7 +81,6 @@ class Service extends \CComponent
         $app->attachEventHandler('onException', array($this, 'onException'));
         $app->attachEventHandler('onError', array($this, 'onError'));
 
-        $this->enable();
         $this->getAuthAdapter()->authenticate();
     }
 
@@ -185,7 +183,7 @@ class Service extends \CComponent
     public function sendData($data, array $filterFields = null, $statusCode = 200)
     {
         if ($filterFields !== null) {
-            $filteredData = array();
+            $filteredData = array('object' => 'list');
             foreach ($filterFields as $field) {
                 if (!array_key_exists($field, $data)) {
                     continue;
