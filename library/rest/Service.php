@@ -284,7 +284,7 @@ class Service extends \CComponent
         foreach (array_diff($errorFields, $errorHandled) as $attribute) {
             $result[$i]['code'] = 'unknown';
             $result[$i]['message'] = implode(',', $errors[$attribute]);
-            $result[$i]['name'] = $attribute;
+            $result[$i]['name'] = $path ? $path . '[' . $attribute . ']' : $attribute;
         }
 
         return $result;
