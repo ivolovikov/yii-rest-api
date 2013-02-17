@@ -182,7 +182,7 @@ class Service extends \CComponent
      */
     public function sendData($data, array $filterFields = null, $statusCode = 200)
     {
-        if ($filterFields !== null) {
+        if ($filterFields !== null && $data !== null) {
             $filteredData = array('object' => 'list');
             foreach ($filterFields as $field) {
                 if (!array_key_exists($field, $data)) {
