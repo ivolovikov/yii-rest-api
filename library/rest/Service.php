@@ -121,7 +121,7 @@ class Service extends \CComponent
             'traces' => $event->exception->getTrace(),
         ));
 
-        $this->sendError($type, $message, array(), $statusCode);
+        $this->sendError($type, defined('YII_DEBUG') && YII_DEBUG ? $message : \Yii::t('ext', 'An error has occurred'), array(), $statusCode);
 	}
 
     /**
@@ -156,7 +156,7 @@ class Service extends \CComponent
             'traces' => array(),
         ));
 
-        $this->sendError(self::ERR_TYPE_API, $event->message);
+        $this->sendError(self::ERR_TYPE_API, defined('YII_DEBUG') && YII_DEBUG ? $event->message : \Yii::t('ext', 'An error has occurred'));
 	}
 
     /**
